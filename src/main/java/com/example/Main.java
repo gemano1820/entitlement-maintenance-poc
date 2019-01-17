@@ -33,10 +33,13 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Random;
 
 @Controller
 @SpringBootApplication
 public class Main {
+
+  private static final String PROPERTY_TITLE_RETRIEVED = "Property Title Retrieved: ";
 
   @Value("${spring.datasource.url}")
   private String dbUrl;
@@ -82,6 +85,43 @@ public class Main {
       HikariConfig config = new HikariConfig();
       config.setJdbcUrl(dbUrl);
       return new HikariDataSource(config);
+    }
+  }
+
+  @RequestMapping("/createproperty")
+  String createProperty(Map<String, Object> model){
+
+    Random randomNumber = new Random();
+
+    int houseNumber = randomNumber.nextInt();
+
+    String houseAddress = houseNumber + " Uptown Street";
+
+    try (Connection connection = dataSource.getConnection()) {
+      Statement stmt = connection.createStatement();
+     
+      ResultSet rs = stmt.executeQuery("SELECT Name, broker__c, title__c FROM property__c");
+
+      ArrayList<String> output = new ArrayList<String>();
+      while (rs.next()) {
+        output.add("Property Name Retrieved: " + rs.getString("Name"));
+        String brokerId = rs.getString("broker__c");
+        String propertyTitle = rs.getString("title__c");
+
+        output.add(PROPERTY_TITLE_RETRIEVED + propertyTitle);
+
+        stmt.executeUpdate("INSERT into property__c (name, beds__c, address__c, baths__c, broker__c, description__c, state__c, city__c, zip__c, title__c, price__c, location__longitude__s, location__latitude__s) VALUES " + 
+        "('" + propertyTitle + "', 3, '" + houseAddress + "', 3, '"+  brokerId + "', 'Beautiful place', 'CA', 'Sunnyvale', 94089, 'Sunshine on the Hill', 1200000, -71.11095, 42.35663);");
+        
+        output.add("Property Name Inserted: " + rs.getString("Name"));
+        break;
+      }
+
+      model.put("records", output);
+      return "db";
+    } catch (Exception e) {
+      model.put("message", e.getMessage());
+      return "error";
     }
   }
 
