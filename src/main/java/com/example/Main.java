@@ -101,7 +101,7 @@ public class Main {
     try (Connection connection = dataSource.getConnection()) {
       Statement stmt = connection.createStatement();
      
-      ResultSet rs = stmt.executeQuery("SELECT Name, broker__c, title__c FROM Property__c");
+      ResultSet rs = stmt.executeQuery("SELECT Name, broker__c, title__c FROM salesforce.Property__c");
 
       System.out.println("createProperty() :: Fetched data from createProperty");
 
@@ -114,7 +114,7 @@ public class Main {
         output.add(PROPERTY_TITLE_RETRIEVED + propertyTitle);
 
         System.out.println("createProperty() :: Preparting to insert data into createProperty");
-        stmt.executeUpdate("INSERT into Property__c (name, beds__c, address__c, baths__c, broker__c, description__c, state__c, city__c, zip__c, title__c, price__c, location__longitude__s, location__latitude__s) VALUES " + 
+        stmt.executeUpdate("INSERT into salesforce.Property__c (name, beds__c, address__c, baths__c, broker__c, description__c, state__c, city__c, zip__c, title__c, price__c, location__longitude__s, location__latitude__s) VALUES " + 
         "('" + propertyTitle + "', 3, '" + houseAddress + "', 3, '"+  brokerId + "', 'Beautiful place', 'CA', 'Sunnyvale', 94089, 'Sunshine on the Hill', 1200000, -71.11095, 42.35663);");
         
         System.out.println("createProperty() :: Data inserted into createProperty");
