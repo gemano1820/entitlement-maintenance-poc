@@ -111,7 +111,7 @@ public class Main {
         String brokerId = rs.getString("broker__c");
         String propertyTitle = rs.getString("title__c");
         
-        if (brokerId != null && ! brokerId.isEmpty()){
+        if (brokerId == null || brokerId.isEmpty()){
           continue;
         }
 
