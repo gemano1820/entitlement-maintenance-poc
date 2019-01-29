@@ -107,7 +107,7 @@ public class Main {
 
       ArrayList<String> output = new ArrayList<String>();
       while (rs.next()) {
-        output.add("Property Name Retrieved: " + rs.getString("Name"));
+        System.out.println("createProperty() :: Property Name Retrieved: " + rs.getString("Name"));
         String brokerId = rs.getString("broker__c");
         String propertyTitle = rs.getString("title__c");
 
@@ -115,7 +115,7 @@ public class Main {
 
         System.out.println("createProperty() :: Preparting to insert data into createProperty");
         stmt.executeUpdate("INSERT into salesforce.Property__c (name, beds__c, address__c, baths__c, broker__c, description__c, state__c, city__c, zip__c, title__c, price__c, location__longitude__s, location__latitude__s) VALUES " + 
-        "('" + propertyTitle + "', 3, '" + houseAddress + "', 3, '"+  brokerId + "', 'Beautiful place', 'CA', 'Sunnyvale', 94089, 'Sunshine on the Hill', 1200000, -71.11095, 42.35663);");
+        "('Welcome to Hotel California', 3, '" + houseAddress + "', 3, 'a011U0000086QSVQA2', 'Beautiful place', 'CA', 'Sunnyvale', 94089, 'Sunshine on the Hill', 1200000, -71.11095, 42.35663);");
         
         System.out.println("createProperty() :: Data inserted into createProperty");
         output.add("Property Name Inserted: " + rs.getString("Name"));
